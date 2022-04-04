@@ -19,7 +19,7 @@ def get_releases(project_dir):
         errno.ENOENT, os.strerror(errno.ENOENT), dist_path)
 
     return [str(release) for release in releases]
-def get_current_version(project_dir: str = '.'):
+def get_current_version(project_dir: str):
     """
     Function to get the current version of the package.
 
@@ -28,10 +28,14 @@ def get_current_version(project_dir: str = '.'):
 
     #Note that at the begining ther may not be a dist folder containing the releases.
     """
+    try :
+        current_release=get_releases(project_dir)[-1].split('-')[1]
+    except:
+        print('There is no version of the package in the dist folder.')
+        current_release=input("Please specify a release version: ")
+    return current_release
 
-    return get_releases(project_dir)[-1].split('-')[1]
-
-def get_previous_version(project_dir: str = '.'):
+def get_previous_version(project_dir: str ):
     """
     Function to get the previous version of the package.
     :param project_dir: The project directory path.
