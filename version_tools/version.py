@@ -1,6 +1,7 @@
 import os
 import errno
 from pathlib import Path
+import re
 def get_releases(project_dir,verbose=False):
     """
 
@@ -34,7 +35,7 @@ def get_current_version(project_dir: str,verbose=False):
     #Note that at the begining ther may not be a dist folder containing the releases.
     """
     try :
-        current_release=get_releases(project_dir,verbose)[-1].split('-')[1]
+        current_release=re.search(r'\d+(\.\d+)+',get_releases(project_dir,verbose)[-1]).group()
         if verbose:
             print('INFO: \n In get_current_version \n The release is: ',current_release)
     except:
@@ -52,7 +53,7 @@ def get_previous_version(project_dir: str,verbose=False):
     len_releases=len(get_releases(project_dir,verbose))
     return get_releases(project_dir)[len_releases-2].split('-')[1]
 
-def increment_version(version : str,level: str ='patch' ,verbos=False):
+def increment_version(version : str,level: str ='patch' ,verbose=False):
     """
     Function to increment the valeur of the package version
     :param version: The current version
